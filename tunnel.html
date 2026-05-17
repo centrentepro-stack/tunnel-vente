@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tunnel de Vente</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0a0a0a;
+    --blanc: #f5f0e8;
+    --or: #c9a84c;
+    --or-clair: #f0d080;
+    --gris: #1a1a1a;
+    --gris2: #2a2a2a;
+    --texte: #b0a890;
+    --danger: #e05555;
+    --succes: #4caf7d;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--noir); color:var(--blanc); font-family:'DM Sans',sans-serif; min-height:100vh; }
+  .page { display:none; min-height:100vh; }
+  .page.active { display:block; }
+
+  /* NAV */
+  .topbar { background:var(--gris); border-bottom:1px solid #2a2a2a; padding:12px 20px; text-align:center; }
+  .topbar-text { font-family:'Syne',sans-serif; font-size:13px; color:var(--or); letter-spacing:2px; text-transform:uppercase; }
+
+  /* HERO */
+  .hero { max-width:760px; margin:0 auto; padding:60px 24px 40px; text-align:center; }
+  .badge { display:inline-block; background:var(--or); color:var(--noir); font-family:'Syne',sans-serif; font-size:11px; font-weight:700; letter-spacing:3px; padding:6px 16px; border-radius:2px; text-transform:uppercase; margin-bottom:28px; }
+  .badge-danger { background:var(--danger); color:#fff; }
+  h1 { font-family:'Syne',sans-serif; font-size:clamp(32px,5vw,58px); font-weight:800; line-height:1.1; margin-bottom:20px; }
+  h1 span { color:var(--or); }
+  .sous-titre { font-size:18px; color:var(--texte); line-height:1.6; max-width:560px; margin:0 auto 36px; }
+
+  /* PRIX */
+  .prix-bloc { background:var(--gris); border:1px solid #333; border-radius:12px; padding:32px; max-width:480px; margin:0 auto 32px; }
+  .prix-barre { font-size:18px; color:var(--texte); text-decoration:line-through; margin-bottom:4px; }
+  .prix-actuel { font-family:'Syne',sans-serif; font-size:64px; font-weight:800; color:var(--or); line-height:1; }
+  .prix-sous { font-size:13px; color:var(--texte); margin-top:8px; }
+  .places { background:#1f1500; border:1px solid var(--or); border-radius:8px; padding:10px 16px; margin-top:16px; font-size:13px; color:var(--or-clair); }
+
+  /* CTA */
+  .cta { display:block; width:100%; max-width:480px; margin:0 auto; background:var(--or); color:var(--noir); font-family:'Syne',sans-serif; font-size:17px; font-weight:700; padding:20px; border-radius:8px; border:none; cursor:pointer; text-align:center; text-transform:uppercase; letter-spacing:2px; transition:all .2s; }
+  .cta:hover { background:var(--or-clair); transform:translateY(-2px); }
+  .cta-danger { background:var(--danger); color:#fff; }
+  .cta-danger:hover { background:#f06666; }
+  .cta-non { display:block; width:100%; max-width:480px; margin:16px auto 0; background:transparent; color:var(--texte); font-size:13px; border:1px solid #333; padding:14px; border-radius:8px; cursor:pointer; text-align:center; transition:all .2s; }
+  .cta-non:hover { border-color:#555; color:var(--blanc); }
+
+  /* BULLETS */
+  .bullets { max-width:560px; margin:0 auto 40px; text-align:left; }
+  .bullet { display:flex; gap:12px; margin-bottom:14px; align-items:flex-start; }
+  .bullet-icon { color:var(--succes); font-size:18px; flex-shrink:0; margin-top:2px; }
+  .bullet-text { font-size:16px; color:var(--texte); line-height:1.5; }
+  .bullet-text strong { color:var(--blanc); }
+
+  /* SÉPARATEUR */
+  .sep { border:none; border-top:1px solid #222; max-width:560px; margin:40px auto; }
+
+  /* ORDER BUMP */
+  .bump { max-width:560px; margin:0 auto 32px; background:#0f1a0f; border:2px dashed var(--succes); border-radius:12px; padding:24px; }
+  .bump-header { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+  .bump-check { width:22px; height:22px; accent-color:var(--succes); cursor:pointer; }
+  .bump-titre { font-family:'Syne',sans-serif; font-size:15px; font-weight:700; color:var(--succes); }
+  .bump-desc { font-size:14px; color:var(--texte); line-height:1.5; margin-left:34px; }
+  .bump-prix { font-family:'Syne',sans-serif; color:var(--succes); font-weight:700; font-size:16px; }
+
+  /* ATTENTION BOX */
+  .attention { background:#1a0f0f; border:1px solid var(--danger); border-radius:8px; padding:16px 20px; max-width:560px; margin:0 auto 24px; font-size:13px; color:#e08080; text-align:center; }
+
+  /* FORM */
+  .form-bloc { max-width:480px; margin:0 auto; }
+  .form-input { width:100%; background:var(--gris); border:1px solid #333; border-radius:8px; padding:14px 16px; color:var(--blanc); font-size:15px; font-family:'DM Sans',sans-serif; margin-bottom:14px; outline:none; transition:border .2s; }
+  .form-input:focus { border-color:var(--or); }
+  .form-label { font-size:13px; color:var(--texte); margin-bottom:6px; display:block; }
+
+  /* MERCI */
+  .merci-icon { font-size:64px; margin-bottom:20px; }
+  .merci-bloc { background:var(--gris); border:1px solid #333; border-radius:12px; padding:32px; max-width:480px; margin:0 auto; }
+
+  /* FOOTER */
+  .footer { text-align:center; padding:40px 20px; border-top:1px solid #1a1a1a; margin-top:60px; }
+  .footer a { color:var(--texte); font-size:12px; text-decoration:none; margin:0 12px; }
+  .footer a:hover { color:var(--or); }
+
+  /* UPSELL 1-CLIC */
+  .upsell-bloc { background:linear-gradient(135deg,#1a1500,#0a0a0a); border:1px solid var(--or); border-radius:16px; padding:40px 32px; max-width:600px; margin:0 auto 32px; text-align:center; }
+
+  @media(max-width:600px) {
+    .hero { padding:40px 16px 30px; }
+    .prix-actuel { font-size:48px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ========== PAGE VENTE ========== -->
+<div id="vente" class="page active">
+  <div class="topbar">
+    <div class="topbar-text">⚡ Offre de lancement — Places limitées</div>
+  </div>
+  <div class="hero">
+    <div class="badge">Offre exclusive</div>
+    <h1>Le titre de ton <span>offre principale</span> va ici</h1>
+    <p class="sous-titre">Sous-titre accrocheur qui explique le bénéfice principal en une phrase. Remplace ce texte par ta promesse.</p>
+
+    <div class="bullets">
+      <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>Bénéfice 1</strong> — description courte de ce que ça apporte</div></div>
+      <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>Bénéfice 2</strong> — description courte de ce que ça apporte</div></div>
+      <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>Bénéfice 3</strong> — description courte de ce que ça apporte</div></div>
+      <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>Bénéfice 4</strong> — description courte de ce que ça apporte</div></div>
+    </div>
+
+    <!-- ESPACE PHOTO/VIDÉO -->
+    <div style="background:var(--gris2);border:2px dashed #333;border-radius:12px;padding:60px 20px;margin-bottom:36px;color:var(--texte);font-size:14px;">
+      📸 Ajoute ici ta vidéo de présentation ou une photo produit<br>
+      <span style="font-size:12px;opacity:.6">Remplace ce bloc par une balise &lt;video&gt; ou &lt;img&gt;</span>
+    </div>
+
+    <div class="prix-bloc">
+      <div class="prix-barre">Valeur réelle : 197€</div>
+      <div class="prix-actuel">47€</div>
+      <div class="prix-sous">Paiement unique — Accès immédiat</div>
+      <div class="places">🔥 Offre de lancement — places limitées, prix augmentera bientôt</div>
+    </div>
+
+    <button class="cta" onclick="goTo('paiement')">Oui, je veux accéder maintenant →</button>
+    <p style="font-size:12px;color:var(--texte);margin-top:16px;text-align:center;">🔒 Paiement 100% sécurisé — Stripe</p>
+  </div>
+  <div class="footer">
+    <a href="#" onclick="goTo('mentions')">Mentions légales</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
+
+<!-- ========== PAGE PAIEMENT ========== -->
+<div id="paiement" class="page">
+  <div class="topbar">
+    <div class="topbar-text">🔒 Paiement sécurisé</div>
+  </div>
+  <div class="hero">
+    <div class="badge">Récapitulatif de commande</div>
+    <h1 style="font-size:clamp(24px,3vw,36px);">Tu es à <span>une étape</span> de l'accès</h1>
+
+    <div class="form-bloc">
+      <div style="background:var(--gris);border:1px solid #333;border-radius:12px;padding:24px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+          <span style="color:var(--texte);font-size:14px;">Offre Principale</span>
+          <span style="font-family:'Syne',sans-serif;font-weight:700;color:var(--or);">47€</span>
+        </div>
+        <div style="border-top:1px solid #333;padding-top:12px;display:flex;justify-content:space-between;">
+          <span style="font-family:'Syne',sans-serif;font-weight:700;">Total</span>
+          <span id="total-display" style="font-family:'Syne',sans-serif;font-weight:700;color:var(--or);">47€</span>
+        </div>
+      </div>
+
+      <!-- ORDER BUMP -->
+      <div class="bump">
+        <div class="bump-header">
+          <input type="checkbox" class="bump-check" id="bump-check" onchange="toggleBump(this)">
+          <span class="bump-titre">OUI — Ajoute le bonus à ma commande !</span>
+        </div>
+        <div class="bump-desc">
+          Description de l'order bump — ce que ça apporte en plus. Disponible uniquement ici, à cette étape.<br>
+          <span class="bump-prix" style="margin-top:8px;display:block;">+ 17€ au lieu de 47€ — offre unique</span>
+        </div>
+      </div>
+
+      <label class="form-label">Prénom</label>
+      <input class="form-input" type="text" placeholder="Ton prénom" id="prenom">
+      <label class="form-label">Email</label>
+      <input class="form-input" type="email" placeholder="ton@email.com" id="email">
+
+      <button class="cta" onclick="simulerPaiement()">Finaliser mon accès — <span id="cta-prix">47€</span> →</button>
+      <p style="font-size:12px;color:var(--texte);margin-top:12px;text-align:center;">🔒 Stripe — Paiement chiffré SSL</p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE UPSELL ========== -->
+<div id="upsell" class="page">
+  <div class="topbar">
+    <div class="topbar-text">⚡ Attends ! Offre spéciale — uniquement sur cette page</div>
+  </div>
+  <div class="hero">
+    <div class="badge badge-danger">Une seule fois — Ne ferme pas</div>
+    <h1>Tu n'auras <span>jamais</span> accès à ça ailleurs</h1>
+    <p class="sous-titre">Parce que tu viens d'acheter, on te propose cette offre exclusive que personne d'autre ne verra.</p>
+
+    <div class="upsell-bloc">
+      <div style="font-size:13px;color:var(--or);letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;">Ce que tu obtiens en plus</div>
+      <div class="bullets" style="text-align:left;margin-bottom:24px;">
+        <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>Outil d'automatisation complet</strong> + guide d'installation</div></div>
+        <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>+300 articles en forte demande</strong> — niches validées</div></div>
+        <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>3 mois offerts</strong> sur l'abonnement Discord (valeur 57€)</div></div>
+      </div>
+      <div class="prix-barre" style="text-align:center;">Valeur réelle : 297€</div>
+      <div class="prix-actuel" style="text-align:center;">97€</div>
+      <div class="prix-sous" style="text-align:center;">Un seul clic — tu as déjà payé, pas de re-saisie</div>
+    </div>
+
+    <button class="cta cta-danger" onclick="goTo('merci')">Oui, j'ajoute cette offre à ma commande →</button>
+    <button class="cta-non" onclick="goTo('downsell')">Non, je ne veux pas de l'automatisation complète</button>
+  </div>
+</div>
+
+<!-- ========== PAGE DOWNSELL ========== -->
+<div id="downsell" class="page">
+  <div class="attention">
+    ⚠️ Ne ferme pas cette page — tu es sur le point de quitter sans voir cette dernière offre.
+  </div>
+  <div class="hero" style="padding-top:20px;">
+    <div class="badge">Dernière chance</div>
+    <h1>On a entendu ton <span>refus</span>.<br>Voilà ce qu'on peut faire.</h1>
+    <p class="sous-titre">Sans l'outil d'automatisation, voilà ce qu'on te propose quand même pour t'aider à démarrer.</p>
+
+    <div class="upsell-bloc" style="border-color:#555;">
+      <div class="bullets" style="text-align:left;margin-bottom:24px;">
+        <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>+300 niches validées</strong> prêtes à exploiter</div></div>
+        <div class="bullet"><span class="bullet-icon">✓</span><div class="bullet-text"><strong>3 mois de mises à jour</strong> offertes sur le Discord</div></div>
+        <div class="bullet" style="opacity:.5"><span class="bullet-icon" style="color:#555;">✗</span><div class="bullet-text" style="text-decoration:line-through;">Outil d'automatisation (non inclus)</div></div>
+      </div>
+      <div class="prix-barre" style="text-align:center;">Valeur : 97€</div>
+      <div class="prix-actuel" style="text-align:center;">37€</div>
+      <div class="prix-sous" style="text-align:center;">Uniquement sur cette page — un seul clic</div>
+    </div>
+
+    <button class="cta" onclick="goTo('merci')">Oui, je prends cette offre à 37€ →</button>
+    <button class="cta-non" onclick="goTo('merci')">Non merci, je ne veux rien de plus</button>
+  </div>
+</div>
+
+<!-- ========== PAGE MERCI ========== -->
+<div id="merci" class="page">
+  <div class="hero">
+    <div class="merci-icon">🎉</div>
+    <div class="badge" style="background:var(--succes);">Commande confirmée</div>
+    <h1>Bienvenue <span>dans la communauté</span> !</h1>
+    <p class="sous-titre">Ton accès est en cours de création. Tu vas recevoir un email avec tes identifiants dans quelques minutes.</p>
+
+    <div class="merci-bloc">
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="color:var(--succes);font-size:20px;">✓</span>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px;">Email de confirmation envoyé</div>
+            <div style="font-size:13px;color:var(--texte);">Vérifie tes spams si tu ne reçois rien dans 5 min</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="color:var(--succes);font-size:20px;">✓</span>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px;">Accès à l'espace membre</div>
+            <div style="font-size:13px;color:var(--texte);">Tes identifiants arrivent par email</div>
+          </div>
+        </div>
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <span style="color:var(--or);font-size:20px;">→</span>
+          <div>
+            <div style="font-weight:500;margin-bottom:2px;">Rejoindre le Discord</div>
+            <div style="font-size:13px;color:var(--texte);">Lien envoyé dans l'email de bienvenue</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESPACE PHOTO/VIDÉO de bienvenue -->
+    <div style="background:var(--gris2);border:2px dashed #333;border-radius:12px;padding:40px 20px;margin:32px auto;max-width:480px;color:var(--texte);font-size:14px;">
+      🎬 Ajoute ici une vidéo de bienvenue personnelle
+    </div>
+  </div>
+  <div class="footer">
+    <a href="#" onclick="goTo('mentions')">Mentions légales</a>
+    <a href="#">Contact</a>
+  </div>
+</div>
+
+<!-- ========== MENTIONS LÉGALES ========== -->
+<div id="mentions" class="page">
+  <div class="hero" style="text-align:left;">
+    <h1 style="font-size:32px;margin-bottom:32px;">Mentions <span>légales</span></h1>
+    <div style="color:var(--texte);line-height:1.8;font-size:15px;max-width:680px;">
+      <p style="margin-bottom:20px;"><strong style="color:var(--blanc);">Éditeur du site</strong><br>
+      [Ton nom ou raison sociale]<br>
+      [Adresse]<br>
+      Email : [ton email]<br>
+      SIRET : [numéro SIRET]</p>
+
+      <p style="margin-bottom:20px;"><strong style="color:var(--blanc);">Hébergement</strong><br>
+      Vercel Inc. — 340 Pine Street, San Francisco, CA 94104</p>
+
+      <p style="margin-bottom:20px;"><strong style="color:var(--blanc);">Paiement</strong><br>
+      Les paiements sont traités par Stripe Inc. Aucune donnée bancaire n'est stockée sur nos serveurs.</p>
+
+      <p style="margin-bottom:20px;"><strong style="color:var(--blanc);">Droit de rétractation</strong><br>
+      Conformément à l'article L221-18 du Code de la consommation, tu disposes d'un délai de 14 jours pour exercer ton droit de rétractation. Pour les produits numériques avec accès immédiat, tu renonces expressément à ce droit en procédant au paiement.</p>
+
+      <p><strong style="color:var(--blanc);">Données personnelles</strong><br>
+      Les données collectées (nom, email) sont utilisées uniquement pour la gestion de ta commande et l'accès aux produits. Conformément au RGPD, tu peux demander la suppression de tes données à [ton email].</p>
+    </div>
+    <button class="cta" style="margin-top:40px;max-width:200px;" onclick="history.back()">← Retour</button>
+  </div>
+</div>
+
+<script>
+function goTo(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById(page).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+let bumpActif = false;
+function toggleBump(el) {
+  bumpActif = el.checked;
+  const total = bumpActif ? '64€' : '47€';
+  document.getElementById('total-display').textContent = total;
+  document.getElementById('cta-prix').textContent = total;
+}
+
+function simulerPaiement() {
+  const email = document.getElementById('email').value;
+  const prenom = document.getElementById('prenom').value;
+  if (!email || !prenom) { alert('Remplis ton prénom et ton email !'); return; }
+  // ICI : appel Stripe Payment Intent (à connecter)
+  console.log('Paiement simulé :', { prenom, email, bump: bumpActif });
+  goTo('upsell');
+}
+</script>
+</body>
+</html>
